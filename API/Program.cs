@@ -1,30 +1,23 @@
-using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-IConfigurationRoot configuration = new ConfigurationBuilder()
-                        .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                        .AddJsonFile("appsettings.json")
-                        .Build();
-
-// Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-    opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddAuthentication();
 
-//builder.Services.AddIdentityDbContext();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
