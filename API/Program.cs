@@ -11,11 +11,15 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddAuthentication();
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddAuthentication();
+
+builder.Services.AddAutoMapper();
+
 builder.Services.AddIdentityDbContext();
+
 builder.Services.AddCustomServices();
 
 builder.Services.AddHttpClient();
